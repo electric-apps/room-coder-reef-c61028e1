@@ -1,43 +1,48 @@
-# Kyle's Stack
+# Todo App
 
-A starter for building apps with TanStack Start, Radix UI, and capsize typography — with [`@tanstack/intent`](https://github.com/TanStack/intent) skills pre-installed for **Electric**, **TanStack DB**, and **Durable Streams**.
+A local-first, real-time todo application powered by Electric SQL and TanStack DB. Changes sync instantly across all open tabs and devices.
 
-## Quick Start
+## Features
+
+- Add, complete, and delete todos
+- Filter by All / Active / Completed
+- Real-time sync across tabs via Electric SQL
+- Optimistic mutations — UI updates instantly, confirmed by Postgres txid handshake
+- Persistent storage in Postgres via Drizzle ORM
+
+## Tech Stack
+
+- **[Electric SQL](https://electric-sql.com)** — Postgres-to-client real-time sync
+- **[TanStack DB](https://tanstack.com/db)** — reactive collections and optimistic mutations
+- **[Drizzle ORM](https://orm.drizzle.team)** — schema definitions and migrations
+- **[TanStack Start](https://tanstack.com/start)** — React meta-framework with SSR + server functions
+- **[Radix UI Themes](https://www.radix-ui.com/themes)** — accessible component library
+
+## Getting Started
 
 ```bash
-npx gitpick KyleAMathews/kpb my-app
-cd my-app
 pnpm install
-pnpm dev
+pnpm drizzle-kit generate && pnpm drizzle-kit migrate
+pnpm dev:start
 ```
 
-## Included Skills
+The app runs at `http://localhost:8080`.
 
-This starter comes with skills pre-installed. Just ask your coding agent:
+## Project Structure
 
-**Electric** — Sync Postgres to your app
-- "Set up Electric sync for my Postgres database"
-- "Run the Electric security checklist"
-
-**TanStack DB** — Reactive client-side data
-- "Add a TanStack DB collection for the users table"
-- "Set up live queries for my todos"
-
-**Durable Streams** — Real-time state sync
-- "Set up a Durable Streams dev environment"
-- "Add presence tracking to my app"
-
-**Radix + Capsize** — Typography
-- "Switch to the Playfair theme"
-- "Show me more font theme options"
-
-## What's Included
-
-- **TanStack Start** - Full-stack React framework
-- **Radix UI** - Accessible components with themes
-- **Capsize typography** - Pixel-perfect text rendering
-- **Dozens of font pairings included** - Ask the agent to set one up
-- **Biome** - Fast linting and formatting
+```
+src/
+  db/
+    schema.ts              # Drizzle table definitions
+    zod-schemas.ts         # Zod schemas derived from Drizzle
+    collections/todos.ts   # TanStack DB Electric collection
+  routes/
+    index.tsx              # Main todo UI (ssr: false)
+    api/todos.ts           # Electric shape proxy
+    api/mutations/
+      todos.ts             # POST — create todo
+      todos.$id.ts         # PATCH / DELETE — update / delete todo
+```
 
 ## License
 
